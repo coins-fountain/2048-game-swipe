@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swipe_n_merge/provider/ads_service.dart';
 import '../../provider/game_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -8,6 +9,7 @@ class GameOverDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final game = context.read<GameProvider>();
+    final ads = context.read<AdService>();
 
     return Dialog(
       backgroundColor: Colors.transparent,
@@ -34,6 +36,40 @@ class GameOverDialog extends StatelessWidget {
             Text("Score: ${game.score}",
                 style: const TextStyle(color: Colors.white)),
             const SizedBox(height: 30),
+            if (!game.isReviveUsed && game.score > 0)
+              ElevatedButton.icon(
+                onPressed: () {
+                  ads.showRewardedAd(
+                      onRewardEarned: () {
+                        game.revive();
+                        Navigator.pop(context);
+                      },
+                      onAdDismissed: () {},
+                      onAdFailed: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("Ad failed to load. Please try again."))
+                        );
+                      }
+                  );
+                },
+                icon: const Icon(Icons.history_rounded),
+                label: const Text("REVIVE"),
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.orange,
+                    foregroundColor: Colors.black,
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12)
+                ),
+              ),
+            TextButton(
+              onPressed: () {
+                game.initGame();
+                Navigator.pop(context);
+              },
+              child: const Text(
+                  "START NEW GAME",
+                  style: TextStyle(color: Colors.redAccent, fontSize: 12)
+              ),
+            ),
             TextButton(
               onPressed: () {
                 game.initGame();
