@@ -109,7 +109,6 @@ class GameProvider extends ChangeNotifier {
         grid = List.from(_gridHistory[targetIndex]);
         score = _scoreHistory[targetIndex];
       } else {
-        // Fallback kalo cuma ada 1 history
         grid = List.from(_gridHistory.last);
         score = _scoreHistory.last;
       }
