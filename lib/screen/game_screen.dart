@@ -164,68 +164,44 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   Widget _buildGrid(GameProvider game) {
-    return AnimatedScale(
-      scale: game.isGameOver ? 0.95 : 1.0,
-      duration: const Duration(milliseconds: 250),
-      child: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: const Color(0xFFBBADA0),
-          borderRadius: BorderRadius.circular(8),
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: const Color(0xFFBBADA0),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: GridView.builder(
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: 16,
+        gridDelegate:
+        const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 4,
+          crossAxisSpacing: 8,
+          mainAxisSpacing: 8,
         ),
-        child: GridView.builder(
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: 16,
-          gridDelegate:
-          const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 4,
-            crossAxisSpacing: 8,
-            mainAxisSpacing: 8,
-          ),
-          itemBuilder: (context, i) =>
-              _buildTile(game.grid[i], i),
-        ),
+        itemBuilder: (context, i) =>
+            _buildTile(game.grid[i], i),
       ),
     );
   }
 
   Widget _buildTile(int val, int index) {
-    return TweenAnimationBuilder<double>(
-      tween: Tween(begin: 0.85, end: 1.0),
-      duration: const Duration(milliseconds: 120),
-      builder: (context, scale, child) {
-        return Transform.scale(
-          scale: scale,
-          child: child,
-        );
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: val == 0
-              ? GameColors.emptyTile
-              : GameColors.getTileColor(val),
-          borderRadius: BorderRadius.circular(6),
-        ),
-        child: Center(
-          child: val == 0
-              ? const SizedBox.shrink()
-              : AnimatedSwitcher(
-            duration: const Duration(milliseconds: 150),
-            transitionBuilder:
-                (child, animation) => ScaleTransition(
-              scale: animation,
-              child: child,
-            ),
-            child: Text(
-              "$val",
-              key: ValueKey("$val-$index"),
-              style: TextStyle(
-                fontSize: val > 100 ? 20 : 28,
-                fontWeight: FontWeight.bold,
-                color:
-                GameColors.getTextColor(val),
-              ),
-            ),
+    return Container(
+      decoration: BoxDecoration(
+        color: val == 0
+            ? GameColors.emptyTile
+            : GameColors.getTileColor(val),
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Center(
+        child: val == 0
+            ? const SizedBox.shrink()
+            : Text(
+          "$val",
+          style: TextStyle(
+            fontSize: val > 100 ? 20 : 28,
+            fontWeight: FontWeight.bold,
+            color: GameColors.getTextColor(val),
           ),
         ),
       ),
