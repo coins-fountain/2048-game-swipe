@@ -70,14 +70,6 @@ class GameOverDialog extends StatelessWidget {
                   style: TextStyle(color: Colors.redAccent, fontSize: 12)
               ),
             ),
-            TextButton(
-              onPressed: () {
-                game.initGame();
-                Navigator.pop(context);
-              },
-              child: const Text("NEW GAME",
-                  style: TextStyle(color: Colors.redAccent)),
-            )
           ],
         ),
       ),
