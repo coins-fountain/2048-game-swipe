@@ -97,7 +97,7 @@ packages:
     source: sdk
     version: "0.0.0"
   google_mobile_ads:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: google_mobile_ads
       sha256: f35e040875bb54e8a3455bcffed3b4ac9e9263fbf7751b9fd1ae7f30793faee8
@@ -217,7 +217,7 @@ packages:
     source: hosted
     version: "2.1.8"
   provider:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: provider
       sha256: "4e82183fa20e5ca25703ead7e05de9e4cceed1fbd1eadc1ac3cb6f565a09f272"
@@ -225,7 +225,7 @@ packages:
     source: hosted
     version: "6.1.5+1"
   shared_preferences:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: shared_preferences
       sha256: "2939ae520c9024cb197fc20dee269cd8cdbf564c8b5746374ec6cacdc5169e64"
@@ -334,7 +334,7 @@ packages:
     source: hosted
     version: "0.7.8"
   url_launcher:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: url_launcher
       sha256: f6a7e5c4835bb4e3026a04793a4199ca2d14c739ec378fdfe23fc8075d0439f8
