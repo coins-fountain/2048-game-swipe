@@ -239,33 +239,72 @@ class _GameScreenState extends State<GameScreen> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (_) => AlertDialog(
-        title: const Text("Game Over"),
-        content: Text("Score: ${game.score}"),
-        actions: [
-          if (!game.isReviveUsed && game.score > 0)
-            TextButton(
-              onPressed: () {
-                ads.showRewardedAd(
-                  onRewardEarned: () {
-                    game.revive();
-                    Navigator.pop(context);
-                  },
-                  onAdDismissed: () {},
-                  onAdFailed: () {},
-                );
-              },
-              child: const Text("Revive"),
-            ),
-          TextButton(
-            onPressed: () {
-              game.initGame();
-              Navigator.pop(context);
-            },
-            child: const Text("New Game"),
+      builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: Container(
+          padding: const EdgeInsets.all(28),
+          decoration: BoxDecoration(
+            color: const Color(0xFF2C3333),
+            borderRadius: BorderRadius.circular(32),
+            border: Border.all(color: Colors.orange.withOpacity(0.3)),
           ),
-        ],
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.emoji_events_rounded, color: Colors.orange, size: 48),
+              const SizedBox(height: 20),
+              const Text("GAME OVER", style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 24),
+              _scoreRow("Current Score", game.score.toString()),
+              const SizedBox(height: 32),
+              if (!game.isReviveUsed && game.score > 0)
+                ElevatedButton.icon(
+                  onPressed: () {
+                    ads.showRewardedAd(
+                        onRewardEarned: () {
+                          game.revive();
+                          Navigator.pop(context);
+                        },
+                        onAdDismissed: () {},
+                        onAdFailed: () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text("Ad failed to load. Please try again."))
+                          );
+                        }
+                    );
+                  },
+                  icon: const Icon(Icons.history_rounded),
+                  label: const Text("REVIVE"),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.orange,
+                      foregroundColor: Colors.black,
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12)
+                  ),
+                ),
+              TextButton(
+                onPressed: () {
+                  game.initGame();
+                  Navigator.pop(context);
+                },
+                child: const Text(
+                    "START NEW GAME",
+                    style: TextStyle(color: Colors.redAccent, fontSize: 12)
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
+    );
+  }
+
+  Widget _scoreRow(String label, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(label, style: const TextStyle(color: Colors.white70)),
+        Text(value, style: const TextStyle(color: Colors.orange, fontWeight: FontWeight.bold, fontSize: 20)),
+      ],
     );
   }
 }

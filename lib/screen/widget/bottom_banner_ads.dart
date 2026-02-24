@@ -12,15 +12,19 @@ class BottomBannerAd extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer2<AdService, ConsentService>(
       builder: (context, adService, consentService, child) {
-        if (!adService.isBannerAdLoaded && !consentService.isRequestLocationInEeaOrUk) {
+        final bool isBannerReady =
+            adService.isBannerAdLoaded && adService.bannerAd != null;
+        final bool shouldShowPrivacy =
+            consentService.isRequestLocationInEeaOrUk;
+        if (!isBannerReady && !shouldShowPrivacy) {
           return const SizedBox.shrink();
         }
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (consentService.isRequestLocationInEeaOrUk)
+            if (shouldShowPrivacy)
               _buildPrivacyLinks(context, consentService),
-            if (adService.isBannerAdLoaded && adService.bannerAd != null)
+            if (isBannerReady)
               _buildAdWidget(adService.bannerAd!)
             else
               const SizedBox(height: 8),
@@ -30,24 +34,32 @@ class BottomBannerAd extends StatelessWidget {
     );
   }
 
-  Widget _buildPrivacyLinks(BuildContext context, ConsentService consentService) {
+  Widget _buildPrivacyLinks(
+      BuildContext context,
+      ConsentService consentService,
+      ) {
     const textStyle = TextStyle(
       fontSize: 10,
       color: Color(0xFF776E65),
       decoration: TextDecoration.underline,
     );
+
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           TextButton(
-            onPressed: () => consentService.showPrivacyOptions(),
+            onPressed: consentService.showPrivacyOptions,
             child: const Text("Privacy Settings Ads", style: textStyle),
           ),
-          const Text("|", style: TextStyle(fontSize: 10, color: Color(0xFF776E65))),
+          const Text(
+            "|",
+            style: TextStyle(fontSize: 10, color: Color(0xFF776E65)),
+          ),
           TextButton(
-            onPressed: () => context.read<GameProvider>().openPrivacyPolicy(),
+            onPressed: () =>
+                context.read<GameProvider>().openPrivacyPolicy(),
             child: const Text("Privacy Policy", style: textStyle),
           ),
         ],
@@ -57,8 +69,8 @@ class BottomBannerAd extends StatelessWidget {
 
   Widget _buildAdWidget(BannerAd ad) {
     return SizedBox(
-      height: ad.size.height.toDouble(),
       width: ad.size.width.toDouble(),
+      height: ad.size.height.toDouble(),
       child: AdWidget(ad: ad),
     );
   }

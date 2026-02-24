@@ -8,7 +8,6 @@ import 'package:swipe_n_merge/screen/introduce_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-
   runApp(
     MultiProvider(
       providers: [
@@ -18,14 +17,11 @@ void main() {
         ChangeNotifierProvider(
           create: (_) => GameProvider()..loadSavedGame(),
         ),
-
         ChangeNotifierProxyProvider<ConsentService, AdService>(
           create: (context) => AdService(
             consentService: Provider.of<ConsentService>(context, listen: false),
           ),
           update: (context, consent, previous) {
-            // Jika AdService belum ada, buat baru.
-            // Jika sudah ada, dia otomatis pakai yang lama tapi dengan data consent terbaru.
             return previous ?? AdService(consentService: consent);
           },
         ),

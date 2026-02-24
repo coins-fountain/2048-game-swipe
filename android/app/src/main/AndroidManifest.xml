@@ -7,9 +7,6 @@
             <data android:scheme="https"/>
         </intent>
     </queries>
-
-
-
     <application
         android:label="swipe_n_merge"
         android:name="${applicationName}"

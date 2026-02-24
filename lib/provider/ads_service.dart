@@ -38,11 +38,14 @@ class AdService extends ChangeNotifier {
 
   Future<void> _initializeAndLoad() async {
     try {
+      print("fradricastttttt");
       await consentService.initializeConsent();
       await MobileAds.instance.updateRequestConfiguration(
         RequestConfiguration(maxAdContentRating: MaxAdContentRating.g),
       );
+      print("fradricasttttttkesinienggaa" );
       await MobileAds.instance.initialize();
+      print("fradricasttttttkesinienggaa" );
       _loadInitialAds();
     } catch (e) {
       debugPrint("Error AdService: $e");
@@ -51,6 +54,7 @@ class AdService extends ChangeNotifier {
 
   void _loadInitialAds() {
     _loadBannerAd();
+    print("fradricastttt2222233");
     _loadInterstitialAd();
     _loadRewardedAd();
   }
