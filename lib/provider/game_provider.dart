@@ -90,7 +90,10 @@ class GameProvider extends ChangeNotifier {
       StorageService.saveGameState(grid, score, highScore);
       if (grid.contains(2048) && !isWin) {
         isWin = true;
-        isGameOver = true; // stop game
+      }
+
+      if (!GameLogic.canMove(grid)) {
+        isGameOver = true;
       }
       notifyListeners();
     }
@@ -119,6 +122,7 @@ class GameProvider extends ChangeNotifier {
       _scoreHistory.clear();
 
       isGameOver = false;
+      isWin =false;
       isReviveUsed = true;
       notifyListeners();
     }

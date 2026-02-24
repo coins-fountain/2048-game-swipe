@@ -27,9 +27,7 @@ class _GameScreenState extends State<GameScreen> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         showDialog(context: context, builder: (_) => const WinDialog());
       });
-    }
-
-    if (game.isGameOver) {
+    } else if (game.isGameOver) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         showDialog(context: context, builder: (_) => const GameOverDialog());
       });
