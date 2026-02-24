@@ -14,6 +14,7 @@ class GameProvider extends ChangeNotifier {
   int highScore = 0;
   bool isGameOver = false;
   bool isReviveUsed = false;
+  bool isWin = false;
 
   void loadSavedGame() async {
     final data = await StorageService.loadGameState();
@@ -28,6 +29,7 @@ class GameProvider extends ChangeNotifier {
   }
 
   void initGame() {
+    isWin = false;
     grid = List.filled(16, 0);
     _gridHistory = [];
     _scoreHistory = [];
@@ -86,8 +88,9 @@ class GameProvider extends ChangeNotifier {
       if (score > highScore) highScore = score;
       HapticFeedback.lightImpact();
       StorageService.saveGameState(grid, score, highScore);
-      if (!GameLogic.canMove(grid)) {
-        isGameOver = true;
+      if (grid.contains(2048) && !isWin) {
+        isWin = true;
+        isGameOver = true; // stop game
       }
       notifyListeners();
     }
